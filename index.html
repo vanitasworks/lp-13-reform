@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KENSO BUILD | リフォーム・工務店</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Helvetica Neue', 'Hiragino Kaku Gothic ProN', sans-serif;
+      background: #f2f0ec;
+      color: #1a1a1a;
+      overflow-x: hidden;
+    }
+
+    /* ===== DIAGONAL HEADER ===== */
+    .site-header {
+      background: #1a1a1a;
+      padding: 0 56px;
+      height: 80px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo { font-size: 1.4rem; font-weight: 900; color: white; letter-spacing: 0.05em; }
+    .logo span { color: #e8a020; }
+    .header-right { display: flex; align-items: center; gap: 32px; }
+    .header-tel { color: rgba(255,255,255,0.6); font-size: 0.85rem; }
+    .header-cta {
+      background: #e8a020; color: white;
+      padding: 12px 28px; text-decoration: none;
+      font-size: 0.82rem; font-weight: 700;
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      transition: background 0.3s;
+    }
+    .header-cta:hover { background: #d49018; }
+
+    /* ===== HERO: DIAGONAL SPLIT ===== */
+    .hero {
+      min-height: calc(100vh - 80px);
+      position: relative;
+      display: flex;
+      overflow: hidden;
+    }
+    .hero-bg-left {
+      position: absolute; inset: 0;
+      background: #1a1a1a;
+      clip-path: polygon(0 0, 65% 0, 55% 100%, 0 100%);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 100px 80px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      width: 60%; min-height: 100%;
+    }
+    .hero-label {
+      font-size: 0.65rem; letter-spacing: 0.4em; color: #e8a020;
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 5.5rem);
+      font-weight: 900; color: white; line-height: 1.05;
+      letter-spacing: -0.03em; margin-bottom: 40px;
+    }
+    .hero-title .accent { color: #e8a020; display: block; }
+    .hero-desc { color: rgba(255,255,255,0.55); font-size: 0.88rem; line-height: 2; max-width: 380px; margin-bottom: 48px; }
+    .hero-btns { display: flex; gap: 16px; }
+    .btn-yellow {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 16px 32px; background: #e8a020; color: white;
+      text-decoration: none; font-weight: 700; font-size: 0.9rem;
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      transition: background 0.3s;
+    }
+    .btn-yellow:hover { background: #d49018; }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 16px 32px; border: 1px solid rgba(255,255,255,0.3);
+      color: white; text-decoration: none; font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+    .btn-ghost:hover { border-color: #e8a020; color: #e8a020; }
+    .hero-img {
+      position: absolute; right: 0; top: 0; bottom: 0; width: 48%;
+      background: #a09070;
+      display: flex; align-items: center; justify-content: center; font-size: 8rem;
+      z-index: 0;
+    }
+    .hero-numbers {
+      position: absolute; bottom: 48px; right: 48px; z-index: 3;
+      display: flex; gap: 0;
+    }
+    .h-num {
+      background: #e8a020; color: white; padding: 20px 28px; text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.2);
+    }
+    .h-num:last-child { border-right: none; }
+    .h-num .n { font-size: 2rem; font-weight: 900; line-height: 1; }
+    .h-num .l { font-size: 0.65rem; letter-spacing: 0.1em; opacity: 0.8; margin-top: 4px; }
+
+    /* ===== SERVICES: BOLD CARDS ===== */
+    .services { padding: 100px 56px; }
+    .services-top { margin-bottom: 64px; }
+    .services-top h2 { font-size: clamp(2rem, 5vw, 4rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
+    .services-top h2 span { color: #e8a020; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+    .service-card {
+      background: white; padding: 0; overflow: hidden;
+      transition: transform 0.3s;
+    }
+    .service-card:hover { transform: translateY(-8px); }
+    .service-img {
+      background: #c0b090; height: 220px;
+      display: flex; align-items: center; justify-content: center; font-size: 5rem;
+      position: relative;
+    }
+    .service-badge {
+      position: absolute; top: 0; left: 0;
+      background: #1a1a1a; color: white;
+      padding: 8px 16px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.15em;
+    }
+    .service-body { padding: 32px 28px; }
+    .service-name { font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; }
+    .service-price { font-size: 1.4rem; font-weight: 900; color: #e8a020; margin-bottom: 12px; }
+    .service-price small { font-size: 0.78rem; color: #888; font-weight: 400; }
+    .service-desc { font-size: 0.82rem; color: #666; line-height: 1.8; }
+
+    /* ===== PROCESS: HORIZONTAL NUMBERED ===== */
+    .process { background: #1a1a1a; color: white; padding: 100px 56px; }
+    .process h2 { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 900; letter-spacing: -0.03em; margin-bottom: 80px; }
+    .process h2 span { color: #e8a020; }
+    .process-steps { display: grid; grid-template-columns: repeat(5, 1fr); position: relative; }
+    .process-steps::before {
+      content: ''; position: absolute;
+      top: 40px; left: 10%; right: 10%; height: 2px;
+      background: linear-gradient(to right, #e8a020, #e8a020 50%, #333 50%);
+      background-size: 20px 2px; background-repeat: repeat-x;
+    }
+    .step { text-align: center; padding: 0 16px; position: relative; }
+    .step-circle {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: #e8a020; margin: 0 auto 24px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; position: relative; z-index: 1;
+    }
+    .step-num { font-size: 0.65rem; letter-spacing: 0.3em; color: #e8a020; margin-bottom: 8px; }
+    .step-name { font-size: 0.88rem; font-weight: 700; margin-bottom: 8px; }
+    .step-desc { font-size: 0.75rem; color: rgba(255,255,255,0.5); line-height: 1.7; }
+
+    /* ===== WORKS: MASONRY-LIKE ===== */
+    .works { padding: 100px 56px; background: #f2f0ec; }
+    .works h2 { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 900; letter-spacing: -0.03em; margin-bottom: 64px; }
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: 240px 240px;
+      gap: 8px;
+    }
+    .work { background: #c0b090; display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; overflow: hidden; cursor: pointer; }
+    .work::after { content: attr(data-label); position: absolute; bottom: 0; left: 0; right: 0; background: rgba(232,160,32,0.9); color: white; padding: 12px 16px; font-size: 0.78rem; font-weight: 700; transform: translateY(100%); transition: transform 0.3s; }
+    .work:hover::after { transform: translateY(0); }
+    .work:nth-child(1) { grid-column: span 5; background: #b0a080; }
+    .work:nth-child(2) { grid-column: span 4; background: #c8b898; }
+    .work:nth-child(3) { grid-column: span 3; background: #a09070; }
+    .work:nth-child(4) { grid-column: span 3; background: #c0b090; }
+    .work:nth-child(5) { grid-column: span 5; background: #b8a888; }
+    .work:nth-child(6) { grid-column: span 4; background: #a89878; }
+
+    /* ===== VOICE ===== */
+    .voice { background: white; padding: 80px 56px; }
+    .voice h2 { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 900; margin-bottom: 48px; }
+    .voice-slider { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .voice-card { border-left: 4px solid #e8a020; padding: 32px 28px; background: #f8f6f2; }
+    .voice-before-after { font-size: 0.68rem; font-weight: 700; color: #e8a020; letter-spacing: 0.2em; margin-bottom: 16px; }
+    .voice-text { font-size: 0.85rem; line-height: 2; margin-bottom: 20px; }
+    .voice-meta { font-size: 0.75rem; color: #888; }
+
+    /* ===== CTA ===== */
+    .cta {
+      background: #e8a020; padding: 100px 56px;
+      display: grid; grid-template-columns: 1fr auto; gap: 80px; align-items: center;
+    }
+    .cta-text h2 { font-size: clamp(2rem, 5vw, 4rem); font-weight: 900; color: white; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 20px; }
+    .cta-text p { color: rgba(255,255,255,0.8); font-size: 0.9rem; line-height: 2; }
+    .cta-form { background: white; padding: 48px 40px; min-width: 360px; }
+    .form-title { font-size: 1rem; font-weight: 800; margin-bottom: 28px; }
+    .form-group { margin-bottom: 16px; }
+    .form-label { font-size: 0.72rem; color: #888; margin-bottom: 6px; display: block; }
+    .form-input { width: 100%; padding: 12px 16px; border: 1px solid #ddd; font-size: 0.9rem; background: #f8f8f8; }
+    .form-submit { width: 100%; padding: 16px; background: #1a1a1a; color: white; border: none; font-size: 0.9rem; font-weight: 700; cursor: pointer; margin-top: 8px; transition: background 0.3s; }
+    .form-submit:hover { background: #e8a020; }
+
+    footer { background: #1a1a1a; color: rgba(255,255,255,0.4); text-align: center; padding: 28px; font-size: 0.75rem; }
+
+    @media (max-width: 768px) {
+      .site-header { padding: 0 20px; }
+      .header-tel { display: none; }
+      .hero-bg-left { clip-path: none; }
+      .hero-content { width: 100%; padding: 100px 24px 200px; }
+      .hero-img { width: 100%; height: 240px; position: relative; clip-path: none; }
+      .hero-numbers { position: relative; bottom: auto; right: auto; margin-top: -60px; }
+      .services, .process, .works, .voice { padding: 70px 24px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; }
+      .process-steps::before { display: none; }
+      .works-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .work:nth-child(n) { grid-column: span 1; aspect-ratio: 1; }
+      .voice-slider { grid-template-columns: 1fr; }
+      .cta { grid-template-columns: 1fr; padding: 60px 24px; }
+      .cta-form { min-width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="logo">KENSO<span>BUILD</span></div>
+    <div class="header-right">
+      <span class="header-tel">📞 0120-XXX-XXX（無料）</span>
+      <a href="#cta" class="header-cta">無料見積り</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-bg-left"></div>
+    <div class="hero-content">
+      <span class="hero-label">KENSO BUILD / REFORM & RENOVATION</span>
+      <h1 class="hero-title">
+        住まいを<br>
+        <span class="accent">進化</span>させる。
+      </h1>
+      <p class="hero-desc">創業30年、神奈川県内1,500棟以上の実績。<br>自社施工だから中間マージンゼロ。<br>品質を落とさず、コストを下げるリフォーム。</p>
+      <div class="hero-btns">
+        <a href="#cta" class="btn-yellow">🏠 無料見積りを依頼</a>
+        <a href="#works" class="btn-ghost">施工事例を見る</a>
+      </div>
+    </div>
+    <div class="hero-img">🏠</div>
+    <div class="hero-numbers">
+      <div class="h-num"><div class="n">1500<small>+</small></div><div class="l">施工実績</div></div>
+      <div class="h-num"><div class="n">30<small>年</small></div><div class="l">創業年数</div></div>
+      <div class="h-num"><div class="n">98<small>%</small></div><div class="l">顧客満足度</div></div>
+    </div>
+  </section>
+
+  <section class="services">
+    <div class="services-top">
+      <h2>WHAT<br>WE <span>DO</span></h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-img">🏠<span class="service-badge">最多依頼</span></div>
+        <div class="service-body">
+          <div class="service-name">キッチン・水回りリフォーム</div>
+          <div class="service-price">¥30万<small>〜</small></div>
+          <p class="service-desc">キッチン・お風呂・トイレをまとめてリフォーム。機能性と見た目を一新。</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-img">🪟<span class="service-badge">省エネ対応</span></div>
+        <div class="service-body">
+          <div class="service-name">断熱・窓リフォーム</div>
+          <div class="service-price">¥15万<small>〜</small></div>
+          <p class="service-desc">内窓追加・断熱改修で光熱費削減。補助金活用で実質負担を抑えられます。</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-img">🛋️<span class="service-badge">人気</span></div>
+        <div class="service-body">
+          <div class="service-name">フルリノベーション</div>
+          <div class="service-price">¥300万<small>〜</small></div>
+          <p class="service-desc">間取り変更から内外装まで全面改修。中古物件を新築同等の住まいに。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="process">
+    <h2>STEP BY <span>STEP</span></h2>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-circle">📞</div>
+        <div class="step-num">STEP 01</div>
+        <div class="step-name">お問い合わせ</div>
+        <p class="step-desc">電話・WEBで無料相談。24時間受付</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">🏠</div>
+        <div class="step-num">STEP 02</div>
+        <div class="step-name">現地調査・見積り</div>
+        <p class="step-desc">無料でお伺いし詳細見積りを提出</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">📋</div>
+        <div class="step-num">STEP 03</div>
+        <div class="step-name">プラン確認・契約</div>
+        <p class="step-desc">納得いただいてからご契約</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">🔨</div>
+        <div class="step-num">STEP 04</div>
+        <div class="step-name">工事開始</div>
+        <p class="step-desc">自社職人が丁寧に施工</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">✅</div>
+        <div class="step-num">STEP 05</div>
+        <div class="step-name">完工・引渡し</div>
+        <p class="step-desc">10年保証付きで安心</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="works" id="works">
+    <h2>WORKS</h2>
+    <div class="works-grid">
+      <div class="work" data-label="キッチンリフォーム / 川崎市">🍳</div>
+      <div class="work" data-label="浴室リフォーム / 横浜市">🛁</div>
+      <div class="work" data-label="フルリノベ / 相模原市">🏠</div>
+      <div class="work" data-label="外壁塗装 / 横浜市">🪣</div>
+      <div class="work" data-label="LDK改修 / 川崎市">🛋️</div>
+      <div class="work" data-label="トイレ / 藤沢市">🚽</div>
+    </div>
+  </section>
+
+  <section class="voice">
+    <h2>お客様の声</h2>
+    <div class="voice-slider">
+      <div class="voice-card">
+        <div class="voice-before-after">BEFORE → AFTER</div>
+        <p class="voice-text">古いキッチンが見違えるほどきれいになりました。見積りも明確で追加費用もなく、安心してお任せできました。</p>
+        <div class="voice-meta">横浜市 / 50代 / キッチンリフォーム</div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-before-after">BEFORE → AFTER</div>
+        <p class="voice-text">フルリノベを3社に相談しましたが、一番親身に話を聞いてくれた建装さんに決めました。仕上がりは期待以上でした。</p>
+        <div class="voice-meta">川崎市 / 40代 / フルリノベーション</div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-before-after">BEFORE → AFTER</div>
+        <p class="voice-text">断熱リフォーム後、冬の光熱費が3割以上下がりました。補助金の手続きも全部やっていただいて助かりました。</p>
+        <div class="voice-meta">相模原市 / 60代 / 断熱リフォーム</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="cta">
+    <div class="cta-text">
+      <h2>まずは<br>無料相談から</h2>
+      <p>相見積もり歓迎。しつこい営業は一切しません。<br>お気軽にご相談ください。</p>
+    </div>
+    <div class="cta-form">
+      <div class="form-title">📋 無料見積りフォーム</div>
+      <div class="form-group">
+        <label class="form-label">お名前</label>
+        <input type="text" class="form-input" placeholder="山田 太郎">
+      </div>
+      <div class="form-group">
+        <label class="form-label">電話番号</label>
+        <input type="tel" class="form-input" placeholder="090-XXXX-XXXX">
+      </div>
+      <div class="form-group">
+        <label class="form-label">リフォーム内容</label>
+        <input type="text" class="form-input" placeholder="キッチン・お風呂など">
+      </div>
+      <button class="form-submit">無料で見積りを依頼する</button>
+    </div>
+  </section>
+
+  <footer>© 2024 KENSO BUILD. ALL RIGHTS RESERVED.</footer>
+
+</body>
+</html>
